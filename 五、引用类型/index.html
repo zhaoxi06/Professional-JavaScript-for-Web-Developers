@@ -8,10 +8,53 @@
 
 <script type="text/javascript">
 window.onload = function(){
-	var colors = ["red","blue","green"];
-	alert(colors.toString());
-	alert(colors.valueOf());
-	alert(colors instanceof String);
+	// var colors = ["red","blue","green"];
+	// alert(colors.toString());
+	// alert(colors.valueOf());
+	// alert(colors instanceof String);
+
+	// var arr = [0,10,15,1,5,2];
+	// arr.sort(function(a,b){
+	// 	return b-a;
+	// });
+	// console.log(arr);
+
+	// var numbers = [1,2,3,4,5,4,3,2,1];
+	// alert(numbers.lastIndexOf(4,5));
+
+	// var start = new Date(2018,10,24,14,39,30).toLocaleString();
+	// console.log(start);
+	// var start = new Date(2018,10,24,14,39,30).toString();
+	// console.log(start);
+
+
+    // var date1 = new Date(2018,9,15);
+    // var date2 = new Date(2018,10,15);
+    // alert(date1<date2);		//true
+    // alert(date1>date2);		//false
+
+    // var re = null;
+    // var i;
+    // for(i=0;i<10;i++){
+    // 	re = /cat/g;
+    // 	console.log(re.test("catastropht"));
+    // }
+    // for(i=0;i<10;i++){
+    // 	re = new RegExp("cat","g");
+    // 	console.log(re.test("catastropht"));
+    // }
+
+    var text = "mom and dad and baby";
+    var pattern = /mom( and dad( and baby)?)?/gi;
+
+    var matches = pattern.exec(text);
+    console.log(matches.index);	//0
+    console.log(matches.input);	//"mom add dad and baby"
+    console.log(matches[0]);		//"mom"
+    console.log(matches[1]);
+    console.log(matches[2]);
+
+
 }
 </script>
 </body>
