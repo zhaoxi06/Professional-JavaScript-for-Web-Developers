@@ -1,5 +1,5 @@
 # 前言
->&emsp;&emsp;引用类型的值（对象）是**引用类型**的一个实例。引用类型是一种数据结构，用于将数据和功能组织在一起。`ECMAScript`从技术上将是一门面向对象的语言，但它不具备传统的面向对象语言所支持的类和接口等基本结构。引用类型有时候也被称为**对象定义**，因为它们秒速的是一类对象所具有的属性和方法。
+>&emsp;&emsp;引用类型的值（对象）是**引用类型**的一个实例。引用类型是一种数据结构，用于将数据和功能组织在一起。`ECMAScript`从技术上将是一门面向对象的语言，但它不具备传统的面向对象语言所支持的类和接口等基本结构。引用类型有时候也被称为**对象定义**，因为它们描述的是一类对象所具有的属性和方法。
 
 `var person = new Object();`<br>
 这行代码创建了Object引用类型的一个新实例。使用的*构造函数*是Object，它只为新对象定义了默认的属性和方法。
@@ -293,5 +293,404 @@
 </code></pre>
 ## 5.4.3 RegExp构造函数属性
 ![构造函数属性](img/4.png)
+# 5.5 Function类型
+>函数实际上是对象，每个函数都是`function`类型的实例，而且都有与其他引用类型一样的属性和方法。由于函数是对象，因此**函数名实际上也是一个指向函数对象的指针**，不会与某个函数绑定。
+
+1. 使用函数声明语法定义函数
+<pre><code>
+    function sum(num1,num2){
+        return num1+num2;
+    }
+</code></pre>
+2. 使用函数表达式定义函数
+<pre><code>
+    var sum = function(num1,num2){
+        return num1+num2;
+    };
+</code></pre><br>
+通过变量sum即可引用函数。另外，注意*函数末尾有一个分号*，就像声明其他变量时一样。<br>
+3. 使用`Function`构造函数定义函数
+<pre><code>
+    var sum = new Function("num1","num2","return num1+num2");   //不推荐
+</code></pre><br>
+不推荐使用这种方式定义函数，因为这种语法会导致解析两次代码（第一次是解析常规`ECMAScript`代码，第二次是解析传入构造函数中的字符串），从而影响性能。<br>
+由于函数名仅仅是指向函数的指针，因此函数名与包含对象指针的其他变量没用什么不同。如下面的例子所示。
+<pre><code>
+    function sum(num1,num2){
+        return num1+num2;
+    }
+    console.log(sum(10,20));
+    var anotherSum = sum;
+    console.log(anotherSum(10,20));
+    sum = null;
+    console.log(anotherSum(10,20));       
+</code></pre>
+## 5.5.1 没用重载（深入理解）
+>将函数名理解为指针，也有助于理解为什么`ECMAScript`中没有函数重载的概念。
+
+<pre><code>
+    function addSomeNumber(num){
+        return num + 100;
+    }
+    function addSomeNumber(num){
+        return num + 200;
+    }
+    //后面的函数覆盖了前面的函数
+</code></pre>
+## 5.5.2 函数声明与函数表达式
+>解析器在执行环境中加载数据时，对函数声明和函数表达式并非一视同仁。解析器会率先读取函数声明，并使其在执行任何代码之前可用（可以访问）；至于函数表达式，则必须等到解析器执行到它所在的代码行，才会真正被解释执行。
+
+<pre><code>
+    alert(sum(10,20));
+    function sum(num1,num2){
+        return num1+num2;
+    }
+</code></pre>
+以上代码能正常运行。因为在代码开始执行之前，解析器就已经通过一个名为**函数声明提升**的过程，读取并将函数声明添加到执行环境中。对代码求值时，`JavaScript`引擎在第一遍会声明函数并将它们放在源代码树的顶部。所以，及时声明函数的代码在调用它的代码后面，`JavaScript`引擎也能把函数声明提升到顶部。<br>
+<pre><code>
+    alert(sum(10,20));
+    var sum = function(num1,num2){
+        return num1+num2;
+    };
+</code></pre><br>
+以上代码运行会报错。原因在于函数位于一个初始化语句中，而不是一个函数声明。在执行到函数所在的语句之前，变量sum中不会报错有队函数的引用；而且，由于第一行代码就会导致报错，实际上也不会执行到下一行。
+## 5.5.3 作为值的函数
+>因为`ECMAScript`中的函数名本身就是变量，示意图函数也可以作为中来使用。也就是说，不仅可以像传递参数一样把一个函数作为参数传递给另一个函数，而且可以将一个函数作为另一个函数的结果返回。
+
+<pre><code>
+    function callSomeFunction(someFunction,someArguments){
+        return someFunction(someArguments);
+    }
+    function add10(num){
+        return num + 10;
+    }
+    var result1 = callSomeFunction(add10,10);
+    console.log(result1);   //20
+    function getGreeting(name){
+        return "Hello," + name; 
+    }
+    var result2 = callSomeFunction(getGreeting,"Nicholas");
+    console.log(result2);   //Hello,Nicholas
+</code></pre><br>
+从一个函数中返回另一个函数。举例，根据某个对象属性对数组进行排序。<br>
+<pre><code>
+    function createComparisonFunction(propertyName){
+        return function(object1,object2){
+            var value1 = object1[propertyName];
+            var value2 = object2[propertyName];
+            if(value1 < value2){
+                return -1;
+            }else if(value1 >value2){
+                return 1;
+            }else{
+                return 0;
+            }
+        }
+    }
+</code></pre>
+## 5.5.4 函数内部属性
+>在函数内部，有两个特殊的对象：`arguments`和`this`。其中，`arguments`对象有一个名为`callee`的属性，该属性时一个指针，指向拥有这个`arguments`对象的函数。
+
+<pre><code>
+    function factorial(num){
+        if(num<=1){
+            return 1;
+        }else{
+            return num*factorial(num-1);
+        }
+    }
+</code></pre><br>
+上述代码在函数有名字，而且名字以后也不改变的情况下，没有问题。但问题是这个函数逇执行与函数名factorial紧紧耦合在一起。为了相处这种紧密耦合的现象，可以像下面这样使用`arguments.callee`。<br>
+<pre><code>
+    function factorial(num){
+        if(num<=1){
+            return 1;
+        }else{
+            return num*arguments.callee(num-1);
+        }
+    }
+</code></pre><br>
+重写后的factorial()函数，无论引用函数时使用的是什么名字，都可以保证正常完成递归调用。<br>
+<pre><code>
+    var trueFactorial = factorial;
+    factorial = function(){
+        return 0;
+    }
+    console.log(trueFactorial(5));  //120
+    console.log(factorial(5));      //0
+</code></pre>
+>`ECMAScript 5`也规范了另一个函数对象的属性：`caller`。这个属性保存着调用当前函数的函数的引用。如果在全局作用域中调用当前函数，它的值为`null`。
+
+<pre><code>
+    function outer(){
+        inner();
+    }
+    function inner(){
+        alert(inner.caller);
+        //alert(arguments.callee.caller);
+    }
+    outer();    //弹出outer()函数包括内容
+</code></pre>
+严格模式下，访问`arguments.callee`会导致错误。<br>
+严格模式还要一个限制：不能为函数的caller属性赋值，否则会导致报错。
+## 5.5.5 函数属性和方法
+1. 每个函数都包含两个属性：`length`和`prototype`。`length`属性表示函数希望接收的命名参数的个数。
+
+<pre><code>
+    function sayName(name){
+        alert(name);
+    }
+    alert(sayName.length);  //1
+</code></pre>
+2.  每个函数都包含两个非继承而来的方法：`apply()`和`call()`。这两个方法真正强大的地方是**能够扩充函数赖以运行的作用域**。
+<pre><code>
+    window.color = "red";
+    var o = {color:"blue"};
+    function sayColor(){
+        console.log(this.color);
+    }
+    sayColor.call(this);    //red
+    sayColor.call(window);  //red
+    sayColor.call(o);       //blue
+    //使用call()和apply()来扩充作用域的最大好处，就是对象不需要与方法有任何耦合关系。下面的这个例子中，是先将sayColor()函数放到了对象o中，然后再通过o来调用它的。
+    o.sayColor = sayColor;
+    o.sayColor();   //blue
+</code></pre>
+3. bind()
+4. 每个函数继承的`toLocaleString()`和`toString()`方法始终都返回函数的代码。返回代码的格式则因浏览器而异——有的返回的代码与源代码中的函数代码一样，而有的则返回函数代码的内部表示，即由解析器删除了注释并对某些代码做了改动后的代码。`valueOf()`方法同源也只返回函数代码。
+
+# 5.6 基本包装类型
+1. 为了便于操作基本类型值，`ECMAScript`还提供了3个特殊的引用类型：`Boolean`、`Number`和`String`。这些类型与本章介绍的其他引用类型相似，但同时也具有与各自的基本类型相应的特殊行为。实际上，每当读取一个基本类型值的时候，后台就会创建一个对象的基本包装类型的对象从而让我们能够调用一些方法来操作这些数据。
+
+<pre><code>
+    var s1 = "some text";
+    var s2 = s1.substring(2);
+</code></pre>
+基本类型值不是对象，因而在逻辑上将它们不应该有方法。其实，当第二行代码访问s1时，访问过程处于一种读取模式，也就是要从内存中读取这个字符串的值。而在读取模式中访问字符串时，后台都会自动完成下列处理。<br>
+(1)创建`String`类型的一个实例；<br>
+(2)在实例上调用指定的方法；<br>
+(3)销毁这个实例。<br>
+想象成执行了以下代码：<br>
+<pre><code>
+    var s1 = new String("some text");
+    var s2 = s1.substring(2);
+    s1 = null;
+</code></pre>
+上面三个步骤的处理，同样也适用于`Boolean`和`Number`类型的处理。<br>
+2. 引用类型与基本包装类型的主要区别就是对象的生存期。使用,`new`操作符创建的引用类型的实例，在执行流离开当前作用域值都一直保存在内存中。而自动创建的基本包装类型的对象，则值存在于一行代码的执行瞬间，然后立即被销毁。所以我们不能在运行时为基本类型值添加属性和方法。
+
+<pre><code>
+    var s1 = "some text";
+    s1.color = "red";
+    alert(s1.color);    //undefined
+</code></pre>
+第二行创建的`String`对象在执行第三行代码时已经被销毁了。第三行代码又创建自己的`String`对象，而该对象没有color属性。<br>
+3. **建议：**不要显示地调用`Boolean`、`Number`和`String`来创建基本包装对象。<br>
+基本包装类型的实例调用`typeof`会返回`object`，而且所有基本包装类型的对象都会被转换为布尔值`true`。<br>
+4. `Object`构造函数根据传入值得类型返回相应基本包装类型的实例。
+<pre><code>
+    var obj = new Object("some text");
+    alert(obj instanceof String);       //true
+</code></pre>
+传入的是字符串，就创建`String`的实例；传入数值就会得到`Number`的实例。
+5. 使用`new`调用基本包装类型的构造函数，与直接调用同名的转型函数是不一样的。
+<pre><code>
+    var value = "25";
+    var number = Number(value);     //转型函数
+    alert(typeof number);   //number
+    var obj = new Number(value);    //构造函数
+    alert(typeif obj);      //object
+</code></pre>
+## 5.6.1 Boolean类型
+1. 创建`Boolean`对象
+`var booleanObject = new Objeact(true);`<br>
+`Boolean`类型的实例重写了`valueOf()`方法，返回基本类型值`true`或`false`；重写了 `toString()`方法，返回字符串"true"或"false"。
+<pre><code>
+    var falseObject = new Boolean(false);
+    var result = falseBoject && true;
+    alert(result);      //true
+    var falseValue = false;
+    result = falseValue && true;
+    alert(result);      //false
+</code></pre>
+2. 基本类型与引用类型的布尔值的两个区别
+<pre><code>
+    alert(typeof falseObject);      //object
+    alert(typeof falseVlaue);       //boolean
+    alert(falseObject instanceof Boolean);  //true      因为Boolean对象是Boolean类型的实例
+    alert(falseValue instanceof Boolean);   //false     instanceof用来测试基本类型都返回false
+</code></pre>
+## 5.6.2 Number类型
+1. 创建`Number`对象<br>
+`var numberObject = new Number(10);`<br>
+与`Boolean`一样，`Number`类型也重写了`valueOf()`、`toLocaleString()`和`toString()`方法。
+2. `toString()`传递一个表示基数的参数，告诉它返回几进制数值的字符串形式。
+3. `toFixed()`按照指定的小数位返回数值的字符串表示
+<pre><code>
+    var num = 10;
+    alert(num.toFixed(2));      //10.00
+    num = 10.005;
+    alert(num.toFixed(2));      //10.01
+</code></pre>
+4. `toExponential()`返回以指数表示法（也称e表示法）表示的数值的字符串形式。
+<pre><code>
+    var num = 10;
+    alert(num.toExponential(1));    //"1.0e+1"
+</code></pre>
+5. `toPrecision()`可能返回孤独大小(fixed)格式，也可能返回指数格式，具体看哪种格式最合适。
+<pre><code>
+    var num = 99;
+    alert(num.toPrecision(1));      //"1e+2"
+    alert(num.toPrecision(2));      //"99"
+    alert(num.toPrecision(3));      //"99.0"
+</code></pre>
+## 5.6.3 String类型
+1. 创建字符串的对象包装类型<br>
+`var stringObject = new String("hello world");`<br>
+继承的`valueOf()`、`toLocaleString()`和`toString()`方法，都返回对象所表示的基本字符串值。
+2. `length`属性。*即使字符串中包含双字节字符，每个字符也仍然算一个字符*。
+3. 字符方法`charAt()`、`charCodeAt()`、`stringValue()`
+    <pre><code>
+        var stringValue = "hello world";
+        alert(stringValue.charAt(1));   //"e"
+        alert(stringValue.charCodeAt(1));   //101
+        alert(stringValue[1]);   //"e"
+    </code></pre>
+
+4. 字符串操作方法
+    * `concat()`用于将一或多个字符串拼接起来
+    * `slice()`
+    * `substr()`
+    * `substring()`
+    <pre><code>
+        var stringValue = "hello world";
+        alert(stringValue.slice(3));    //"lo world"
+        alert(stringValue.substring(3));    //"lo world"
+        alert(stringValue.substr(3));    //"lo world"
+        alert(stringVlue.slice(3,7));   //"lo w"
+        alert(stringVlue.substring(3,7));   //"lo w"
+        alert(stringVlue.substr(3,7));   //"lo worl"
+        //传入负数时
+        alert(stringValue.slice(-3));    //"rld"
+        alert(stringValue.substring(-3));    //"hello world"
+        alert(stringValue.substr(-3));    //"lo world"
+        //将负数与字符串长度相加
+        alert(stringVlue.slice(3,-4));   //"lo w"
+        //将所有负数都转为0，会交换位置
+        alert(stringVlue.substring(3,-4));   //"hel"
+        //第一个参数是负数加上字符串长度，第二个参数是负数转为0
+        alert(stringVlue.substr(3,-4));   //""
+    </code></pre>
+
+5. 字符串位置方法`indexOf()`和`lastIndexOf()`：接收2个参数，要查找的项和（可选）表示查找起点位置的索引。
+6. `trim()`删除字符串前置和后缀的所有空格。
+<pre><code>
+    var str = "     hello world     ";
+    var strValue = str.trim();
+    console.log(str);   //"     hello world     "
+    console.log(strValue);      //"hello world"
+</code></pre>
+7. 字符串大小写转换方法：`toLowerCase()`和`toUpperCase()`
+8. 字符串的模式匹配方法
+
+    * `match()`只接收一个参数，要么是正则表达式，要么是一个RegExp对象。
+    <pre><code>
+        var text = "cat, bat, sat, fat";
+        var pattern = /.at/;
+        //与pattern.exec(text)相同
+        var matches = text.match(pattern);
+        alert(matches.index);   //0
+        alert(matches[0]);      //cat
+        alert(matches.lastIndex);   //0
+    </code></pre>
+    * `search()`只接收一个参数，与`match()`一样。返回第一个匹配项的索引，没有找到返回-1。
+    <pre><code>
+        var text = "cat, bat, sat, fat";
+        var pos = text.search(/at/);
+        alert(pos);     //1
+    </code></pre>
+    * `replace()`接收2个参数：第一个参数可以是一个`RegExp`对象或者一个字符串，第二个参数可以是一个字符串或者一个函数。
+    <pre><code>
+        var text = "cat, bat, sat, fat";
+        var result = text.replace("at","ond");
+        alert(result);      //cond, bat, sat, fat
+        result = text.replace(/at/g,"ond");
+        alert(result);      //cond, bond, sond, fond
+    </code></pre>
+    如果第二个参数是字符串，还可以使用一些特殊的字符序列，将正则表达式操作得到的值插入到结果字符串中。下表列出了`ECMAScript`提供的这些特殊的字符序列。
+    ![特殊字符序列](img/5.png)
+    <pre><code>
+        var text = "cat, bat, sat, fat";
+        result = text.replace(/(.at)/g,"word ($1)");
+        alert(result);  //word (cat), word (bat), word (sat), word (fat)
+    </code></pre>
+    * `splite()`接收2个参数，第一个可以是字符串，也可以是RegExp对象，第二个参数可选，用于指导数组的大小。
+    
+9. `localeCompare()`比较两个字符串
+    <pre><code>
+        var stringValue = "yellow";
+        alert(stringValue.localeCopare("brick"));       //1
+        alert(stringValue.localeCopare("yellow"));      //0
+        alert(stringValue.localeCopare("zoo"));         //-1
+    </code></pre>
+
+10. `fromCharCode()`接收一或多个字符编码，然后将它们转换成一个字符串。<br>
+`alert(String.fromCharCode(104,101,108,108,111);    //hello`
+# 5.7 单体内置对象
+>`ECMA-262`对内置对象的定义是：“由`ECMAScript`实现提供的、不依赖与宿主环境的对象，这些对象在`ECMAscript`程序执行之前就已经存在了。”开发人员不必显式地实例化内置对象，因为它们已经实例化了。例如：`Object`、`Array`和`String`。`ECMA-262`还定义了两个单体内置对象：`Global`和`Math`。
+
+## 5.7.1 Global对象
+>`Global`（全局）对象。事实上，没有全局变量或全局函数；所有在全局作用域中定义的属性和函数，都是`global`对象的属性。诸如`isNaN()`、`isFinite()`、`parseInt()`、`parseFloat`，实际上全都是`Global`对象的方法。此外，`Global`对象还包含其他一些方法。
+
+1. URL编码方法
+    * `encodeURI()`主要用于整个URI，不会对本身属于URI的特殊字符进行编码，例如冒号、正斜杠、问好和井字号。
+    * `encodeURIComponent()`主要用于URI中某一段。会对发现的任何非标准字符进行编码。
+两个方法都是对URI进行编码，以便发送给浏览器。有效的URI中不能包含某些字符，比如空格。而这两个URI编码方法就可以对URI进行编码， 它们用特殊的UTF-8编码替换所有无效的字符，从而让浏览器能够接受和理解。
+<pre><code>
+    var uri = "http://www.wrox.com/illegal value.htm#start";
+    alert(encodeURI(uri));  //"http://www.wrox.com/illegal%20value.htm#start"
+    alert(encodeURIComponent(uri)); //"http%3A%2F%2Fwww.wrox.com%2Fillegal%20value.htm%23start"
+</code></pre>
+一般对整个URI使用`encodeURI()`，而只能对附加在现有URI后面的字符使用`encodeURIComponent`。<br>
+与两个方法对应的解码方法为：`decodeURI`和`decodeURIComonent`。<br>
+2. `eval()`方法。只接收一个参数，即要执行的`ECMAScript`字符串。
+<pre><code>
+    eval("alert('hi');");
+    //相当于下面这句
+    alert("hi");
+</code></pre>
+通过`eval()`执行的代码被认为是包含该次调用的执行环境的一部分，因此被执行的代码具有与该执行环境相同的作用域链。<br>
+在`eval()`中创建的任何变量或函数都不会被提升，因为在解析代码的时候，它们被包含在一个字符串中；它们只在`eval()`执行的时候创建。
+3. Global对象的属性
+下表列出了Global对象的所有属性：
+![Global对象的属性](img/6.png)
+4. window对象
+一种取得`Global`对象的方法是使用以下代码：
+<pre><code>
+    var global = function(){
+        return this;
+    }
+</code></pre>
+## 5.7.2 Math对象
+1. Math对象的属性<br>
+![Math对象的属性](img/7.png)
+2. `min()`和`max()`方法
+<pre><code>
+    var max = Math.max(3,54,56,17);
+    var min = Math.min(1,5,7,0);
+</code></pre>
+要找打数组中的最大或最小值， 可以像下面这样使用`apply()`方法<br>
+`var max = Math.max.apply(Math,arr);`<br>
+3. 舎入方法
+
+    * Math.ceil()
+    * Math.floor()
+    * Math.round()
+
+4. `random()`返回介于0和1之间的一个随机数，不包括0和1.
+5. 其他方法
+![Math的其他方法](img/8.png)
+# 5.8 小结
+在所有代码执行之前，作用域中就已经存在两个内置对象：`Global`和`Math`。在大多数`EMScript`实现中都不能直接访问`Global`对象；不过，web浏览器实现了承担该角色的`window`对象。
 
 

@@ -44,16 +44,89 @@ window.onload = function(){
     // 	console.log(re.test("catastropht"));
     // }
 
-    var text = "mom and dad and baby";
-    var pattern = /mom( and dad( and baby)?)?/gi;
+    // var text = "mom and dad and baby";
+    // var pattern = /mom( and dad( and baby)?)?/gi;
 
-    var matches = pattern.exec(text);
-    console.log(matches.index);	//0
-    console.log(matches.input);	//"mom add dad and baby"
-    console.log(matches[0]);		//"mom"
-    console.log(matches[1]);
-    console.log(matches[2]);
+    // var matches = pattern.exec(text);
+    // console.log(matches.index);		//0
+    // console.log(matches.input);		//"mom add dad and baby"
+    // console.log(matches[0]);		//"mom add dad and baby"
+    // console.log(matches[1]);		//" and dad and baby"
+    // console.log(matches[2]);		//" and baby"
 
+    // var arr1 = [1,2,3,4];
+    // var arr2 = arr1;
+    // console.log(arr2);
+    // arr1 = null;
+    // console.log(arr2);
+
+    // alert(sum(10,20));
+    // var sum = function(num1,num2){
+    // 	return num1+num2;
+    // };
+    // alert(sum(10,20));
+    // function sum(num1,num2){
+    // 	return num1+num2;
+    // }
+
+    // function callSomeFunction(someFunction,someArguments){
+    //     return someFunction(someArguments);
+    // }
+    // function add10(num){
+    //     return num + 10;
+    // }
+    // var result1 = callSomeFunction(add10,10);
+    // console.log(result1);
+    // function getGreeting(name){
+    //     return "Hello," + name; 
+    // }
+    // var result2 = callSomeFunction(getGreeting,"Nicholas");
+    // console.log(result2);
+    // function factorial(num){
+    // 	if(num<=1){
+    // 		return 1;
+    // 	}else{
+    // 		return num*factorial(num-1);
+    // 		// return num*arguments.callee(num-1);
+    // 	}
+    // }
+    // var trueFactorial = factorial;
+    // factorial = function(){
+    // 	return 0;
+    // }
+    // console.log(trueFactorial(5));
+    // use strict
+    // function outer(){
+    // 	inner();
+    // }
+    // function inner(){
+    // 	// console.log(inner.caller);
+    // 	console.log(arguments.callee.caller);
+    // }
+    // outer();
+
+    // function callerDemo(){
+    // 	if(callerDemo.caller){
+    // 		alert(callerDemo.caller.toString());
+    // 	}else{
+    // 		alert("this is a top function");
+    // 	}
+    // }
+    // callerDemo();
+    // function fn(){
+    // 	console.log(this);
+    // }
+    // fn();
+    // var a = 1;
+    // console.log(window.a);
+    // console.log(a);
+
+    // var str = "hello world";
+    // console.log(str.charCodeAt());
+    // console.log(str.charCodeAt(1));
+    var text = "cat, bat, sat, fat";
+    result = text.replace(/(.at)/g,"word ($1)");
+    console.log(result);  //
 
 }
 </script>
