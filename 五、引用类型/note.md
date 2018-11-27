@@ -487,12 +487,12 @@
 第二行创建的`String`对象在执行第三行代码时已经被销毁了。第三行代码又创建自己的`String`对象，而该对象没有color属性。<br>
 3. **建议：**不要显示地调用`Boolean`、`Number`和`String`来创建基本包装对象。<br>
 基本包装类型的实例调用`typeof`会返回`object`，而且所有基本包装类型的对象都会被转换为布尔值`true`。<br>
-4. `Object`构造函数根据传入值得类型返回相应基本包装类型的实例。
-<pre><code>
-    var obj = new Object("some text");
-    alert(obj instanceof String);       //true
-</code></pre>
-传入的是字符串，就创建`String`的实例；传入数值就会得到`Number`的实例。
+4. `Object`构造函数根据传入值的类型返回相应基本包装类型的实例。
+    <pre><code>
+        var obj = new Object("some text");
+        alert(obj instanceof String);       //true
+    </code></pre>
+传入的是字符串，就创建`String`的实例；传入数值就会得到`Number`的实例。<br>
 5. 使用`new`调用基本包装类型的构造函数，与直接调用同名的转型函数是不一样的。
 <pre><code>
     var value = "25";
