@@ -15,25 +15,64 @@
         alert(this.name);
     }
     var person1 = new Person();
+    console.log(person1.constructor == Person);
+    // person1.sex = "female";
+    // person1.name = "lxq";
+    // // console.log(person1.prototype);
+    // // console.log(Person.prototype);
+    // // console.log(person1.__proto__);
+    // // // console.log(Person._ptoto_);
+    // // console.log(Person.prototype.isPrototypeOf(person1));
+    // // console.log(Object.getPrototypeOf(person1) == Person.prototype);	//true
+    // // console.log(Object.getPrototypeOf(person1).name);	//Nicholas
+    // // console.log(Person.constructor);
+    // var descriptor = Object.getOwnPropertyDescriptor(Person.prototype,"name");
+    // // console.log(descriptor);
+    // // Object.defineProperty(Person.prototype,"name",{
+    // Object.defineProperty(Person.prototype,"name",{
+    // 	enumerable: false
+    // })
+    // for (var prop in person1){
+    // 	console.log(prop);
+    // }
+    // var keys = Object.keys(Person.prototype);
+    // console.log(keys);	//name age job sayName
+    // person1.name = "Rob";
+    // person1.sex = "male";
+    // keys = Object.keys(person1);
+    // console.log(keys);	//name sex
+    // var keys = Object.getOwnPropertyNames(Person.prototype);
+    // console.log(keys);	//constructor name age job sayName
+    // function Person(){}        //仅仅定义了一个构造函数，与原型无关
+    // var friend = new Person();
+    // Person.prototype = {
+    //     constructor: Person,
+    //     name: "Nicholas",
+    //     age: 29,
+    //     job: "Software Engineer",
+    //     sayName: function(){
+    //         alert(this.name);
+    //     }
+    // };
+    // friend.sayName();   //error
 
-    // console.log(person1.prototype);
-    // console.log(Person.prototype);
-    // console.log(person1.__proto__);
-    // // console.log(Person._ptoto_);
-    // console.log(Person.prototype.isPrototypeOf(person1));
-    // console.log(Object.getPrototypeOf(person1) == Person.prototype);	//true
-    // console.log(Object.getPrototypeOf(person1).name);	//Nicholas
-    // console.log(Person.constructor);
-
-    var descriptor = Object.getOwnPropertyDescriptor(person1);
-    // console.log(typeof person1);
-    console.log(descriptor);
-    // Object.defineProperty(person1,"name",{
-    	// enumerable: false
-    // <!-- }) -->
-    for (var prop in person1){
-    	// console.log(prop);
-    }
+    // function Person(){}
+    // Person.prototype = {
+    //     constructor: Person,
+    //     name: "Nicholas",
+    //     age: 29,
+    //     job: "Softeare Engineer",
+    //     friends: ["Shelby", "Court"],
+    //     sayName: function(){
+    //         alert(this.name);
+    //     }
+    // }
+    // var person1 = new Person();
+    // var person2 = new Person();
+    // person1.friends.push("Van");
+    // console.log(person1.friends);   //"Shelby", "Court", "Van"
+    // console.log(person2 .friends);   //"Shelby", "Court", "Van"
+    // console.log(person1.friends == person2.friends);    //true
 </script>
 </body>
 </html>
