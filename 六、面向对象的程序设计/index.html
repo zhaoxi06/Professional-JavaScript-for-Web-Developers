@@ -7,15 +7,15 @@
 <body>
 
 <script type="text/javascript">
-	function Person(){}
-    Person.prototype.name = "Nicholas";
-    Person.prototype.age = 29;
-    Person.prototype.job = "Software Engineer";
-    Person.prototype.sayName = function(){
-        alert(this.name);
-    }
-    var person1 = new Person();
-    console.log(person1.constructor == Person);
+	// function Person(){}
+ //    Person.prototype.name = "Nicholas";
+ //    Person.prototype.age = 29;
+ //    Person.prototype.job = "Software Engineer";
+ //    Person.prototype.sayName = function(){
+ //        alert(this.name);
+ //    }
+ //    var person1 = new Person();
+ //    console.log(person1.constructor == Person);
     // person1.sex = "female";
     // person1.name = "lxq";
     // // console.log(person1.prototype);
@@ -73,6 +73,49 @@
     // console.log(person1.friends);   //"Shelby", "Court", "Van"
     // console.log(person2 .friends);   //"Shelby", "Court", "Van"
     // console.log(person1.friends == person2.friends);    //true
+    // function SuperType(){
+    //     this.prototype = true;
+    // }
+    // SuperType.prototype.getSuperValue = function(){
+    //     return this.prototype;
+    // };
+    // function SubType(){
+    //     this.subprototype = false;
+    // }
+    // //subType继承了SuperType
+    // SubType.prototype = new SuperType();
+    // SubType.prototype.getSubValue = function(){
+    //     return this.subprototype;
+    // };
+    // SubType.prototype = {
+    //     getSubValue: function(){
+    //         return this.subprototype;
+    //     },
+    //     someOtherMethod: function(){
+    //         return false;
+    //     }
+    // }
+    // var instance = new SubType();
+    // console.log(instance.getSuperValue());
+    // var sup = new SuperType();
+    // console.log(sup.getSuperValue()); 
+
+    function SuperType(name){
+        this.name = name;
+    }
+    SuperType.prototype.getName = function(){
+    	console.log(this.name);
+    }
+    function SubType(){
+        //①继承了SuperType，同时还传递了参数
+        SuperType.call(this, "NIcholas");
+        //②实例属性
+        this.age = 29;
+    }
+    var instance = new SubType();
+    console.log(instance.name);     //Nicholas
+    console.log(instance.age);      //29
+    instance.getName();
 </script>
 </body>
 </html>
