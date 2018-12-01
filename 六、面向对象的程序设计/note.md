@@ -9,28 +9,28 @@
 1. 数据属性
 >包含一个数据值的位置。在这个位置可以读取和写入值。
 
-    * \[\[Configurable\]\]:表示能否通过`delete`删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为访问器属性。直接在对象上定义的属性，它们的这个特性默认值为`true`。
-    * \[\[Enumerable\]\]:表示能否通过`for-in`循环返回属性。直接在对象上定义的属性，它们的这个特性默认值为`true`。
-    * \[\[Writable\]\]:表示能否修改属性的值。直接在对象上定义的属性，它们的这个特性默认值为`true`。
-    * \[\[Value\]\]:包含这个属性的数据值。读取属性值的时候，从这个位置度；写入属性值的时候，把新值保存在这个位置。这个特性的默认值为`undefined`。
-    <pre><code>
-        var person = {
-            name : "Nicholas"
-        }
-    </code></pre>
-    创建一个名为name的属性，它的\[\[Configurable\]\]、\[\[Enumerable\]\]、\[\[Writable\]\]特性都被设置为`true`，\[\[Value\]\]被设置为"Nicholas"。<br>
-    使用`object.defineProperty()`修改属性默认的特性。这个方法接收3个参数：属性所在的对象、属性的名字和一个描述符对象。其中，描述符对象的属性必须是：configurable、enumerable、writable和value。
-    <pre><code>
-        var person = {};
-        Object.defineProperty(person, "name", {
-            writbale: false,
-            value: "Nicholas"
-        });
-        alert(person.name);     //"Nicholas"
-        person.name = "Greg";
-        alert(person.name);     //"Nihcolas"
-    </code></pre>
-    **注意：** 一旦把configurable设置为false，就不能再把它变回可配置了。
+* \[\[Configurable\]\]:表示能否通过`delete`删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为访问器属性。直接在对象上定义的属性，它们的这个特性默认值为`true`。
+* \[\[Enumerable\]\]:表示能否通过`for-in`循环返回属性。直接在对象上定义的属性，它们的这个特性默认值为`true`。
+* \[\[Writable\]\]:表示能否修改属性的值。直接在对象上定义的属性，它们的这个特性默认值为`true`。
+* \[\[Value\]\]:包含这个属性的数据值。读取属性值的时候，从这个位置度；写入属性值的时候，把新值保存在这个位置。这个特性的默认值为`undefined`。
+<pre><code>
+    var person = {
+        name : "Nicholas"
+    }
+</code></pre>
+创建一个名为name的属性，它的\[\[Configurable\]\]、\[\[Enumerable\]\]、\[\[Writable\]\]特性都被设置为`true`，\[\[Value\]\]被设置为"Nicholas"。<br>
+使用`object.defineProperty()`修改属性默认的特性。这个方法接收3个参数：属性所在的对象、属性的名字和一个描述符对象。其中，描述符对象的属性必须是：configurable、enumerable、writable和value。
+<pre><code>
+    var person = {};
+    Object.defineProperty(person, "name", {
+        writbale: false,
+        value: "Nicholas"
+    });
+    alert(person.name);     //"Nicholas"
+    person.name = "Greg";
+    alert(person.name);     //"Nihcolas"
+</code></pre>
+**注意：** 一旦把configurable设置为false，就不能再把它变回可配置了。
 2. 访问器属性
 >访问器属性不包含数据值；它们包含一对`getter`和`setter`函数（这两个函数不是必须的）；它们有如下4个特性。
 
