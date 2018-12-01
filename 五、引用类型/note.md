@@ -603,7 +603,7 @@
         var matches = text.match(pattern);
         alert(matches.index);   //0
         alert(matches[0]);      //cat
-        alert(matches.lastIndex);   //0
+        alert(matches.lastIndex);   //undefined
     </code></pre>
     * `search()`只接收一个参数，与`match()`一样。返回第一个匹配项的索引，没有找到返回-1。
     <pre><code>
@@ -626,7 +626,7 @@
         result = text.replace(/(.at)/g,"word ($1)");
         alert(result);  //word (cat), word (bat), word (sat), word (fat)
     </code></pre>
-    * `splite()`接收2个参数，第一个可以是字符串，也可以是RegExp对象，第二个参数可选，用于指导数组的大小。
+    * `split()`接收2个参数，第一个可以是字符串，也可以是RegExp对象，第二个参数可选，用于指导数组的大小。
     
 9. `localeCompare()`比较两个字符串
     <pre><code>
