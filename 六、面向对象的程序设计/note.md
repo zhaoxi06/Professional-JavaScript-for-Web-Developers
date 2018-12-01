@@ -30,37 +30,37 @@
     person.name = "Greg";
     alert(person.name);     //"Nihcolas"
 </code></pre>
-**注意：** 一旦把configurable设置为false，就不能再把它变回可配置了。
+**注意：** 一旦把configurable设置为false，就不能再把它变回可配置了。<br>
 2. 访问器属性
 >访问器属性不包含数据值；它们包含一对`getter`和`setter`函数（这两个函数不是必须的）；它们有如下4个特性。
 
-    * \[\[Configurable\]\]:表示能否通过`delete`删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为访问器属性。直接在对象上定义的属性，它们的这个特性默认值为`true`。
-    * \[\[Enumerable\]\]:表示能否通过`for-in`循环返回属性。直接在对象上定义的属性，它们的这个特性默认值为`true`。
-    * \[\[Get\]\]:在读取属性时调用的函数。默认值为`undefinedn`。
-    * \[\[Set\]\]:在写入属性时调用的函数。默认值为`undefinedn`。
-    访问器属性不能直接定义，必须使用`Object.defineProperty()`来定义。通过`Object.defineProperty()`定义的属性，\[\[Enumerable\]\]默认为`false`。
-    <pre><code>
-        var book = {
-            _year: 2004,
-            edition: 1
-        };
-        Object.defineProperty(book, "year", {
-            get: function(){
-                return this._year;
-            },
-            set: function(newValue){
-                if(newValue > 2004){
-                    this._year = newValue;
-                    this.edition += newValue - 2004;
-                }
+* \[\[Configurable\]\]:表示能否通过`delete`删除属性从而重新定义属性，能否修改属性的特性，或者能否把属性修改为访问器属性。直接在对象上定义的属性，它们的这个特性默认值为`true`。
+* \[\[Enumerable\]\]:表示能否通过`for-in`循环返回属性。直接在对象上定义的属性，它们的这个特性默认值为`true`。
+* \[\[Get\]\]:在读取属性时调用的函数。默认值为`undefinedn`。
+* \[\[Set\]\]:在写入属性时调用的函数。默认值为`undefinedn`。<br>
+访问器属性不能直接定义，必须使用`Object.defineProperty()`来定义。通过`Object.defineProperty()`定义的属性，\[\[Enumerable\]\]默认为`false`。
+<pre><code>
+    var book = {
+        _year: 2004,
+        edition: 1
+    };
+    Object.defineProperty(book, "year", {
+        get: function(){
+            return this._year;
+        },
+        set: function(newValue){
+            if(newValue > 2004){
+                this._year = newValue;
+                this.edition += newValue - 2004;
             }
-        });
-        book.year = 2005;
-        alert(book.edition);    //2
-    </code></pre>
+        }
+    });
+    book.year = 2005;
+    alert(book.edition);    //2
+</code></pre>
 
 ## 6.1.2 定义多个属性
->`Object,defineProperties()`通过描述符一次定义多个属性。这个方法接收两个对象参数：第一个对象是要添加和修改其属性的对象，第二个对象的属性与第一个对象中要添加或修改的属性一一对应。
+>`Object.defineProperties()`通过描述符一次定义多个属性。这个方法接收两个对象参数：第一个对象是要添加和修改其属性的对象，第二个对象的属性与第一个对象中要添加或修改的属性一一对应。
 
 <pre><code>
     var book = {};
@@ -143,7 +143,7 @@ Person()中的代码与createPerson()的不同之处：<br>
 * 直接将属性和方法赋值给了`this`对象；
 * 没有`return`语句<br>
 
-此外，函数名使用大写字母P开头。**建议：**构造函数始终都应该以一个大写字母开头，而非构造函数则应该以一个小写字母开头。<br>
+此外，函数名使用大写字母P开头。**建议：** 构造函数始终都应该以一个大写字母开头，而非构造函数则应该以一个小写字母开头。<br>
 person1和person2分别保存着Person的一个不同的实例。这两个对象都有一个`constructor`（构造函数）属性，该属性指向Person。
 <pre><code>
     alert(person1.constructor == Person);   //true
@@ -158,7 +158,6 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
 
 1. 将构造函数当做函数
 >构造函数与其他函数的唯一区别，就在于调用它们的方式不同。任何函数，只要通过`new`操作符来调用，那它就可以作为构造函数；而任何函数，如果不通过`new`操作符来调用，那它跟普通函数也不会有什么两样。
-
     <pre><code>
         //当做构造函数使用
         var person = new Person("Nichlas", 29, "Software Engineer");
@@ -171,7 +170,6 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
         Person.call(o, "Kristen", 25, "Nurse");
         o.sayName();    //"Kristen"
     </code></pre>
-
 2. 构造函数的问题
 >使用构造函数的主要问题，就是每个方法都要在每个实例上重新创建一遍。在前面的例子中，person1和person2都要一个名为sayName()的方法，但那两个方法不是同一个Function的实例。函数是对象，因此每定义一个函数，也就是实例化了一个对象。以这种方式创建函数，会导致不同的作用域链和标识符解析。没有必要创建两个完成同样任务的Function实例。
 ## 6.2.3 原型模式
@@ -196,7 +194,7 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
 `Person.prototype.constructor == Person`<br>
 
     &emsp;&emsp;当调用构造函数创建一个新实例后，该实例的内部将包含一个指针，指向构造函数的原型对象。`ECMA-262`第5版中管这个指针叫\[\[Prototype\]\]。虽然在脚本中没有标准的方式访问\[\[Prototype\]\]，但Firefox、Safari和Chrome在每个对象上都支持一个属性`__proto__`；而在其他实现中，这个属性对脚本则是完全不可见的。这个连续存在于*实例*与*构造函数的原型对象*之间，而不是存在于实例与构造函数直接。<br>
-    &emsp;&emsp;下图展示各个对象之间的关系：
+&emsp;&emsp;下图展示各个对象之间的关系：
 ![各个对象之间的关系](img/1.png)
 它们之间的关系如下：<br>
 ①Person.prototype指向原型对象；<br>
@@ -247,43 +245,42 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
 `console.log("name" in person1);`<br>
 
     * 同时使用`hasOwnProperty()`方法和`in`操作符，就可以确定该属性到底存在于实例中还是存在于原型中。
-        <pre><code>
-            function hasPrototypeProperty(object, name){
-                return !object.hasOwnProperty(name) && (name in object);
-            }
-        </code></pre>
+    <pre><code>
+        function hasPrototypeProperty(object, name){
+            return !object.hasOwnProperty(name) && (name in object);
+        }
+    </code></pre>
     * 在`for-in`循环时，返回的是所有能够通过对象访问的，[可枚举的](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Enumerability_and_ownership_of_properties)（\[\[Enumerable\]\]为`true`）属性，即包括实例中的属性，也包括原型中的属性。原型中为不可枚举的属性，若实例中定义了与该不可枚举属性同名的属性，也会在`for-in`循环中返回，因为原型中的属性已经被屏蔽了，而所有开发人员定义的属性都是可枚举的。
-        <pre><code>
-            var person1 = new Person();
-            //原型中有name属性，实例中又定义了name属性，所以把原型中的name屏蔽掉了
-            person1.name = "lxq";
-            Object.defineProperty(Person.prototype,"name",{
-                //把原型中的name定义改为不可枚举的
-                enumerable: false
-            })
-            for (var prop in person1){
-                //循环中能返回name属性
-                console.log(prop);  //name age job sayName
-            }
-        </code></pre>
+    <pre><code>
+        var person1 = new Person();
+        //原型中有name属性，实例中又定义了name属性，所以把原型中的name屏蔽掉了
+        person1.name = "lxq";
+        Object.defineProperty(Person.prototype,"name",{
+            //把原型中的name定义改为不可枚举的
+            enumerable: false
+        })
+        for (var prop in person1){
+            //循环中能返回name属性
+            console.log(prop);  //name age job sayName
+        }
+    </code></pre>
     * `Object.keys()`取得对象上所有可枚举的实例属性，不包括原型上的属性。这个方法接收一个对象作为参数，返回一个包含所有可枚举属性的字符串数组。数组中属性名的排列顺序和使用`for-in`循环遍历该对象时返回的顺序一致。
-        <pre><code>
-            var keys = Object.keys(Person.prototype);
-            console.log(keys);  //name age job sayName
-            person1.name = "Rob";
-            person1.sex = "male";
-            keys = Object.keys(person1);
-            console.log(keys);  //name sex
-        </code></pre>
+    <pre><code>
+        var keys = Object.keys(Person.prototype);
+        console.log(keys);  //name age job sayName
+        person1.name = "Rob";
+        person1.sex = "male";
+        keys = Object.keys(person1);
+        console.log(keys);  //name sex
+    </code></pre>
     * `Object.getOwnPropertyNames()`返回对象所有实例属性，无论它是否可枚举。
-        <pre><code>
-            var keys = Object.getOwnPropertyNames(Person.prototype);
-            console.log(keys);  //constructor name age job sayName
-        </code></pre>
+    <pre><code>
+        var keys = Object.getOwnPropertyNames(Person.prototype);
+        console.log(keys);  //constructor name age job sayName
+    </code></pre>
 
-3. 更简单的原型语法
->每添加一个属性和方法就要敲一遍`Person.prototype`。为减少不必要的输入，我们用一个包含所有属性和方法的对象字面量来重写整个原型对象。
-
+3. 更简单的原型语法<br>
+每添加一个属性和方法就要敲一遍`Person.prototype`。为减少不必要的输入，我们用一个包含所有属性和方法的对象字面量来重写整个原型对象。
     <pre><code>
         function Person(){}
         Person.prototype = {
@@ -296,70 +293,68 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
         }
     </code></pre>
     以上代码相当于将`Person.prototype`设置为等于一个以对象字面量形式创建的新对象。最终结果相同，但有一个例外：`constructor`属性不再指向`Person`了。以上代码本质上完全重写了默认的`prototype`对象，因此`constructor`属性也就变成了新对象的`constructor`属性（指向Object构造函数），不再指向`Person`函数。通过`constructor`无法确定对象的类型了。
-    <pre><code>
-        var friend = new Person();
-        alert(firend instanceof Object);    //true
-        alert(firend instanceof Person);    //true
-        alert(firend.constructor == Object);    //true
-        alert(firend.constructor == Person);    //false
-    </code></pre>
-    如果`constructor`的值真的很重要，可以像下面这样特意将它设置回适当的值。
-    <pre><code>
-        function Person(){}
-        Person.prototype = {
-            //////////////////////////////
-            constroutor: Person,
-            /////////////////////////////
-            name: "Nicholas",
-            age: 29,
-            job: "Software Engineer",
-            sayName: function(){
-                alert(this.name);
-            }
+<pre><code>
+    var friend = new Person();
+    alert(firend instanceof Object);    //true
+    alert(firend instanceof Person);    //true
+    alert(firend.constructor == Object);    //true
+    alert(firend.constructor == Person);    //false
+</code></pre>
+如果`constructor`的值真的很重要，可以像下面这样特意将它设置回适当的值。
+<pre><code>
+    function Person(){}
+    Person.prototype = {
+        //////////////////////////////
+        constroutor: Person,
+        /////////////////////////////
+        name: "Nicholas",
+        age: 29,
+        job: "Software Engineer",
+        sayName: function(){
+            alert(this.name);
         }
-    </code></pre>
-    注意，以这种方式重设`constructor`属性会导致它的\[\[Enumerable\]\]特性被设置为`true`，可以通过`Object.defineProperty()`设为`false`。
-    <pre><code>
-        Object.defineProperty(Person.prototype, "constructor",{
-            enumerable: false,
-            value: Person
-        });
-    </code></pre>
+    }
+</code></pre>
+注意，以这种方式重设`constructor`属性会导致它的\[\[Enumerable\]\]特性被设置为`true`，可以通过`Object.defineProperty()`设为`false`。
+<pre><code>
+    Object.defineProperty(Person.prototype, "constructor",{
+        enumerable: false,
+        value: Person
+    });
+</code></pre>
 
-4. 原型的动态性
->由于在原型中查找值的过程是一次搜索，因此我们对原型对象所做的任何修改都能够立即从实例上反映出来——即使是先创建了实例后修改原型。<br>
-尽管可以随时为原型添加属性和方法，并且修改能够立即在所有对象实例中反映出来，但如果是重写整个原型对象，那么情况就不一样了。调用构造函数是会为实例添加一个指向最初原型的\[\[Prototype\]\]指针，而把原型修改为另外一个对象就等于切断了构造函数与最初原型之间的联系。**注意：**实例中的指针仅指向原型，而不指向构造函数。
-
-    <pre><code>
-        function Person(){}        //仅仅定义了一个构造函数，与原型无关
-        var friend = new Person();
-        Person.prototype = {
-            constructor: Person,
-            name: "Nicholas",
-            age: 29,
-            job: "Software Engineer",
-            sayName: function(){
-                alert(this.name);
-            }
-        };
-        friend.sayName();   //friend.sayName is not a function
-    </code></pre>
+4. 原型的动态性<br>
+由于在原型中查找值的过程是一次搜索，因此我们对原型对象所做的任何修改都能够立即从实例上反映出来——即使是先创建了实例后修改原型。<br>
+尽管可以随时为原型添加属性和方法，并且修改能够立即在所有对象实例中反映出来，但如果是重写整个原型对象，那么情况就不一样了。调用构造函数是会为实例添加一个指向最初原型的\[\[Prototype\]\]指针，而把原型修改为另外一个对象就等于切断了构造函数与最初原型之间的联系。**注意：** 实例中的指针仅指向原型，而不指向构造函数。
+<pre><code>
+    function Person(){}        //仅仅定义了一个构造函数，与原型无关
+    var friend = new Person();
+    Person.prototype = {
+        constructor: Person,
+        name: "Nicholas",
+        age: 29,
+        job: "Software Engineer",
+        sayName: function(){
+            alert(this.name);
+        }
+    };
+    friend.sayName();   //friend.sayName is not a function
+</code></pre>
     下图展示了这个过程的内幕：
-    ![](img/2.png)
+![](img/2.png)
 
-5. 原生对象的原型
->所有原生的引用类型(Object、Array、String等)，都是采用原型模式创建的，都在其构造函数的原型上定义了方法。例如，在`Array.prototype`中可以找到`sort()`方法，在`String.prototype`中可以找到`substring()`方法。<br>
+5. 原生对象的原型<br>
+所有原生的引用类型(Object、Array、String等)，都是采用原型模式创建的，都在其构造函数的原型上定义了方法。例如，在`Array.prototype`中可以找到`sort()`方法，在`String.prototype`中可以找到`substring()`方法。<br>
 通过原生对象的原型，不仅可以取得所有默认方法的引用，而且也可以定义新方法。可以像修改自定义对象的原型一样修改原生对象的原型，因此可以随时添加方法。
-
-    <pre><code>
-        //给基本包装类型String添加一个名为startWith()的方法
-        String.prototype.startWith = function (text){
-            return this.indexOf(text) == 0;
-        };
-        var msg = "Hello world!";
-        alert(msg.startWith("Hello"));  //true
-    </code></pre>
-    **建议：**不要修改原生对象的原型。如果因某个实现中缺少某个方法，就在原生对象的原型中添加这个方法，那么当在另一个支持该方法的实现中运行代码时，就可能会导致命名冲突。而且，这样做也可能会意外地重写原生方法。
+<pre><code>
+    //给基本包装类型String添加一个名为startWith()的方法
+    String.prototype.startWith = function (text){
+        return this.indexOf(text) == 0;
+    };
+    var msg = "Hello world!";
+    alert(msg.startWith("Hello"));  //true
+</code></pre>
+    **建议：** 不要修改原生对象的原型。如果因某个实现中缺少某个方法，就在原生对象的原型中添加这个方法，那么当在另一个支持该方法的实现中运行代码时，就可能会导致命名冲突。而且，这样做也可能会意外地重写原生方法。
 
 6. 原型对象的问题
 >首先，它省略了为构造函数传递初始化参数这一环节，结果所有实例在默认情况下都将取得相同的属性值。<br>
@@ -500,26 +495,26 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
 
 &emsp;&emsp;以以上代码为例，调用`instance.getSuperValue()`会经历三个搜索步骤：1）搜索实例；2）搜索`SubType.prototype`；3）搜索`SuperType.prototype`，最后一步才找到该方法。在找不到属性或方法的情况下，搜索过程总是要一环一环地前行到原型链末端才会停下来。
 
-1. 别忘记默认的原型
->前面例子中展示的原型链还少一环。因为所有引用类型默认都继承了Object，而这个继承也是通过原型链实现的。下图展示了该例子中完整的原型链。
-
+1. 别忘记默认的原型<br>
+前面例子中展示的原型链还少一环。因为所有引用类型默认都继承了Object，而这个继承也是通过原型链实现的。下图展示了该例子中完整的原型链。
 ![上面例子中完整的原型链](img/4.png)
 2. 确定原型和实例的关系<br>
-    * 第一种方式是使用`instanceof`操作符<br>
+    * 第一种方式是使用`instanceof`操作符
     <pre><code>
         console.log(instance instanceof Object);        //true
         console.log(instance instanceof SuperType);     //true
         console.log(instance instanceof SubType);       //true
     </code></pre>
+
     * 使用`isPrototypeOf()`方法
     <pre><code>
         console.log(Object.prototype.isPrototypeOf(instance));  //true
         console.log(SuperType.prototype.isPrototypeOf(instance));  //true
         console.log(SubType.prototype.isPrototypeOf(instance));  //true
     </code></pre> 
-3. 谨慎地定义方法
->子类型有时候需要重写超类型中的某个方法，或者需要添加超类型中不存在的某个方法。但不管怎样，给原型添加方法的代码一定要放在替换原型的语句之后。
 
+3. 谨慎地定义方法<br>
+子类型有时候需要重写超类型中的某个方法，或者需要添加超类型中不存在的某个方法。但不管怎样，给原型添加方法的代码一定要放在替换原型的语句之后。
 <pre><code>
     function SuperType(){
         this.prototype = true;
@@ -548,8 +543,8 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
     console.log(sup.getSuperValue());           //true
 </code></pre>
 
-第一个方法`getSubValue`被添加到了`SubType`中。第二个方法`getSuperValue()`是原型链中已经存在的一个方法，但重写这个方法将会屏蔽原来的那个方法。换句话说，当通过`SubType`的实例调用`getSuperValue()`时，调用的就是这个重新定义的方法；但通过`SuperType`的实例调用`getSuperValue()`时，还会继续调用原来的那个方法。**注意：**必须在用`SuperType`的实例替换原型之后，再定义这两个方法。<br>
-&emsp;&emsp;另外一个需要**注意**的是，通过原型链实现继承时，不能使用对象字面量创建原型方法。因为这样会重写原型链。
+    第一个方法`getSubValue`被添加到了`SubType`中。第二个方法`getSuperValue()`是原型链中已经存在的一个方法，但重写这个方法将会屏蔽原来的那个方法。换句话说，当通过`SubType`的实例调用`getSuperValue()`时，调用的就是这个重新定义的方法；但通过`SuperType`的实例调用`getSuperValue()`时，还会继续调用原来的那个方法。**注意：** 必须在用`SuperType`的实例替换原型之后，再定义这两个方法。<br>
+&emsp;&emsp;另外一个需要 **注意** 的是，通过原型链实现继承时，不能使用对象字面量创建原型方法。因为这样会重写原型链。
 <pre><code>
     function SuperType(){
         this.prototype = true;
@@ -577,7 +572,7 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
 </code></pre>
 &emsp;&emsp;以上代码刚刚把`SuperType`的实例复制给原型，紧接着又将原型替换成一个对象字面量而导致的问题。由于现在的原型包含的是一个`Object`的实例，而非`SuperType`的实例。
 
-4.原型链的问题<br>
+4. 原型链的问题<br>
 &emsp;&emsp;原型链最主要的问题来自包含引用类型值的原型。即包含引用类型值的原型属性会被所有实例共享。在通过原型来实现继承时，原型实际上会变成另一个类型的实例。于是，原先的实例属性也就变成了现在的原型属性了。<br>
 <pre><code>
     function SuperType(){
