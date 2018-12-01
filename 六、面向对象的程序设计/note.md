@@ -30,8 +30,7 @@
         person.name = "Greg";
         alert(person.name);     //"Nihcolas"
     </code></pre>
-    **注意：**一旦把configurable设置为false，就不能再把它变回可配置了。
-
+    **注意：** 一旦把configurable设置为false，就不能再把它变回可配置了。
 2. 访问器属性
 >访问器属性不包含数据值；它们包含一对`getter`和`setter`函数（这两个函数不是必须的）；它们有如下4个特性。
 
