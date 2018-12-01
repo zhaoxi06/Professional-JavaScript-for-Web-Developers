@@ -156,8 +156,8 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
 创建自定义的构造函数意味着将来可以将它的实例标识为一种特定的类型。<br>
 以这种方式定义的构造函数是定义在`Global`对象（在浏览器中是`window`对象）中的。<br>
 
-1. 将构造函数当做函数
->构造函数与其他函数的唯一区别，就在于调用它们的方式不同。任何函数，只要通过`new`操作符来调用，那它就可以作为构造函数；而任何函数，如果不通过`new`操作符来调用，那它跟普通函数也不会有什么两样。
+1. 将构造函数当做函数<br>
+构造函数与其他函数的唯一区别，就在于调用它们的方式不同。任何函数，只要通过`new`操作符来调用，那它就可以作为构造函数；而任何函数，如果不通过`new`操作符来调用，那它跟普通函数也不会有什么两样。
     <pre><code>
         //当做构造函数使用
         var person = new Person("Nichlas", 29, "Software Engineer");
@@ -170,8 +170,8 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
         Person.call(o, "Kristen", 25, "Nurse");
         o.sayName();    //"Kristen"
     </code></pre>
-2. 构造函数的问题
->使用构造函数的主要问题，就是每个方法都要在每个实例上重新创建一遍。在前面的例子中，person1和person2都要一个名为sayName()的方法，但那两个方法不是同一个Function的实例。函数是对象，因此每定义一个函数，也就是实例化了一个对象。以这种方式创建函数，会导致不同的作用域链和标识符解析。没有必要创建两个完成同样任务的Function实例。
+2. 构造函数的问题<br>
+使用构造函数的主要问题，就是每个方法都要在每个实例上重新创建一遍。在前面的例子中，person1和person2都要一个名为sayName()的方法，但那两个方法不是同一个Function的实例。函数是对象，因此每定义一个函数，也就是实例化了一个对象。以这种方式创建函数，会导致不同的作用域链和标识符解析。没有必要创建两个完成同样任务的Function实例。
 ## 6.2.3 原型模式
 >我们创建的每个函数都有一个`prototype`（原型）属性，这个属性是一个指针，指向一个对象，而这个对象的用途是包含可以用特定类型的所有实例共享的属性和方法。如果按照字面意思来理解，那么`prototype`就是通过调用构造函数而创建的那个对象实例的原型对象。使用原型对象的好处是可以让所有对象实例共享它所包含的属性和方法。换句话说，不必再构造函数中定义对象实例的信息，而是可以将这些信息直接添加到原型对象中。
 
@@ -189,9 +189,9 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
     person2.sayName();      //"NIcholas"
     alert(person1.sayName == person2.sayName);      //true
 </code></pre>
-1. 理解原型对象
->只要创建一个新函数，就会为该函数创建一个`prototype`（原型）属性，这个属性指向函数的原型对象。默认情况下，所有原型对象都会自动获得一个`constructor`（构造函数）属性，这个属性包含一个指向`prototype`属性所在函数的指针。以上面代码为例，即:<br>
-`Person.prototype.constructor == Person`<br>
+1. 理解原型对象<br>
+    只要创建一个新函数，就会为该函数创建一个`prototype`（原型）属性，这个属性指向函数的原型对象。默认情况下，所有原型对象都会自动获得一个`constructor`（构造函数）属性，这个属性包含一个指向`prototype`属性所在函数的指针。以上面代码为例，即:<br>
+    `Person.prototype.constructor == Person`<br>
 
     &emsp;&emsp;当调用构造函数创建一个新实例后，该实例的内部将包含一个指针，指向构造函数的原型对象。`ECMA-262`第5版中管这个指针叫\[\[Prototype\]\]。虽然在脚本中没有标准的方式访问\[\[Prototype\]\]，但Firefox、Safari和Chrome在每个对象上都支持一个属性`__proto__`；而在其他实现中，这个属性对脚本则是完全不可见的。这个连续存在于*实例*与*构造函数的原型对象*之间，而不是存在于实例与构造函数直接。<br>
 &emsp;&emsp;下图展示各个对象之间的关系：
@@ -240,9 +240,9 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
 </code></pre>
 `ECMAScript 5`的`Object.getOwnPropertyDescriptor()`方法只能用于实例属性，要取得原型属性的描述符，必须直接在原型对象上调用`Object.getOwnPropertyDescriptor()`。
 
-2. 原型与in操作符
->有两种方式使用`in`操作符：单独使用和在`for-in`循环中使用。在单独使用时，`in`操作符会在通过对象能够访问给定属性时返回`true`，无论该属性存在于实例中还是原型中。<br>
-`console.log("name" in person1);`<br>
+2. 原型与in操作符<br>
+    有两种方式使用`in`操作符：单独使用和在`for-in`循环中使用。在单独使用时，`in`操作符会在通过对象能够访问给定属性时返回`true`，无论该属性存在于实例中还是原型中。<br>
+    `console.log("name" in person1);`<br>
 
     * 同时使用`hasOwnProperty()`方法和`in`操作符，就可以确定该属性到底存在于实例中还是存在于原型中。
     <pre><code>
@@ -344,7 +344,7 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
 ![](img/2.png)
 
 5. 原生对象的原型<br>
-所有原生的引用类型(Object、Array、String等)，都是采用原型模式创建的，都在其构造函数的原型上定义了方法。例如，在`Array.prototype`中可以找到`sort()`方法，在`String.prototype`中可以找到`substring()`方法。<br>
+    所有原生的引用类型(Object、Array、String等)，都是采用原型模式创建的，都在其构造函数的原型上定义了方法。例如，在`Array.prototype`中可以找到`sort()`方法，在`String.prototype`中可以找到`substring()`方法。<br>
 通过原生对象的原型，不仅可以取得所有默认方法的引用，而且也可以定义新方法。可以像修改自定义对象的原型一样修改原生对象的原型，因此可以随时添加方法。
 <pre><code>
     //给基本包装类型String添加一个名为startWith()的方法
@@ -354,7 +354,7 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
     var msg = "Hello world!";
     alert(msg.startWith("Hello"));  //true
 </code></pre>
-    **建议：** 不要修改原生对象的原型。如果因某个实现中缺少某个方法，就在原生对象的原型中添加这个方法，那么当在另一个支持该方法的实现中运行代码时，就可能会导致命名冲突。而且，这样做也可能会意外地重写原生方法。
+**建议：** 不要修改原生对象的原型。如果因某个实现中缺少某个方法，就在原生对象的原型中添加这个方法，那么当在另一个支持该方法的实现中运行代码时，就可能会导致命名冲突。而且，这样做也可能会意外地重写原生方法。
 
 6. 原型对象的问题
 >首先，它省略了为构造函数传递初始化参数这一环节，结果所有实例在默认情况下都将取得相同的属性值。<br>
@@ -514,7 +514,7 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
     </code></pre> 
 
 3. 谨慎地定义方法<br>
-子类型有时候需要重写超类型中的某个方法，或者需要添加超类型中不存在的某个方法。但不管怎样，给原型添加方法的代码一定要放在替换原型的语句之后。
+    子类型有时候需要重写超类型中的某个方法，或者需要添加超类型中不存在的某个方法。但不管怎样，给原型添加方法的代码一定要放在替换原型的语句之后。
 <pre><code>
     function SuperType(){
         this.prototype = true;
@@ -542,8 +542,7 @@ person1和person2既是Object对象的实例，同时也是Person的实例。
     var sup = new SuperType();
     console.log(sup.getSuperValue());           //true
 </code></pre>
-
-    第一个方法`getSubValue`被添加到了`SubType`中。第二个方法`getSuperValue()`是原型链中已经存在的一个方法，但重写这个方法将会屏蔽原来的那个方法。换句话说，当通过`SubType`的实例调用`getSuperValue()`时，调用的就是这个重新定义的方法；但通过`SuperType`的实例调用`getSuperValue()`时，还会继续调用原来的那个方法。**注意：** 必须在用`SuperType`的实例替换原型之后，再定义这两个方法。<br>
+第一个方法`getSubValue`被添加到了`SubType`中。第二个方法`getSuperValue()`是原型链中已经存在的一个方法，但重写这个方法将会屏蔽原来的那个方法。换句话说，当通过`SubType`的实例调用`getSuperValue()`时，调用的就是这个重新定义的方法；但通过`SuperType`的实例调用`getSuperValue()`时，还会继续调用原来的那个方法。**注意：** 必须在用`SuperType`的实例替换原型之后，再定义这两个方法。<br>
 &emsp;&emsp;另外一个需要 **注意** 的是，通过原型链实现继承时，不能使用对象字面量创建原型方法。因为这样会重写原型链。
 <pre><code>
     function SuperType(){
