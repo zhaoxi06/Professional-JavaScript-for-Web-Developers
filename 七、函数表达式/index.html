@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+<script type="text/javascript">
+	// function createFunctions(){
+ //        var result = new Array();
+ //        for(var i=0;i<10;i++){
+ //            result[i] = function(num){
+ //                return function(){
+ //                    return num;
+ //                }
+ //            }(i);
+ //        }
+ //        return result;
+ //    }
+	// var result = createFunctions();
+	// for(var i=0;i<10;i++){
+	// 	console.log(result[i]());
+	// }
+	// "use strict";
+	// var name = "The Window";
+	// var object = {
+	//     name : "My Object",
+	//     getNameFunc : function(){
+	//         return function(){
+	//             // return this.name;
+	//             return this;
+	//         }
+	//     }
+	// };
+	// console.log(object.getNameFunc()());
+	(function(){
+		var privateVariable = 10;
+		function privateFunction(){
+			return false;
+		}
+		MyObject = function(){};
+		MyObject.prototype.publicMethod = function(){
+			privateVariable ++;
+			return privateFunction();
+		}
+	})();
+
+</script>
+</body>
+</html>
