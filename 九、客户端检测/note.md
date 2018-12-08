@@ -365,3 +365,83 @@
 4. 识别Windows操作系统<br>
 在Windows平台下，还可以从用户代理字符串中进一步取得具体的操作系统信息。下表列出了不同浏览器在表示不同的Windows操作系统时给出的不同字符串。
 ![](img/1.png)
+```
+    if(system.win){
+        if(/Win(?:dows )?([^do]{2})\s?(\d+\.\d+)?/.test(ua)){
+            if(RegExp["$1"] == "NT"){
+                system.win = RegExp["$2"];
+            }
+        }
+    }
+```
+有了这些检查平台的代码后，我们可以编写如下代码。
+```
+    if(client.system.win){
+        if(client.system.win == "10.0"){
+            //说明这是win10
+        }
+    }
+```
+
+5. 识别移动设备
+为要检测的所有移动设添加属性。
+```
+    var client = function(){
+        var engine = {
+            //呈现引擎
+            ie: 0,
+            gecko: 0,
+            webkit: 0,
+            khtml: 0,
+            opera: 0,
+            //具体的版本号
+            ver: null
+        };
+        var browser = {
+            //浏览器
+            ie: 0,
+            firefox: 0,
+            safari: 0,
+            konq: 0,
+            opera: 0,
+            chrome: 0,
+            //具体的版本
+            ver: null
+        };
+        var system = {
+            win: false,
+            mac: false,
+            x11: false,
+
+            //移动设备
+            iphone: false,
+            ipod: false,
+            ipad: false,
+            ios: false,
+            android: false,
+            nokiaN: false,
+            winMobile: false
+        };
+        //在此检测呈现引擎、平台和设备
+        return {
+            engine: engine,
+            browser: browser,
+            system: system
+        };
+    }();
+```
+通常简单地检测字符串"iPhone"、"iPod"、"iPad"，就可以分别设置相应属性的值了。
+```
+    system.iphone = ua.indexOf("iPhone") > -1;
+    system.ipod = ua.indexOf("ipod") > -1;
+    system.ipad = ua.indexOf("iPad") > -1;
+```
+
+6. 识别游戏系统
+
+## 9.3.3 使用方法
+用户代理检测是客户端检测的最后一个选择。只要可能，都应该优先采用能检测和怪癖检测。用户代理检测一般适用于下列情形。
+
+* 不能直接准确地使用能力检测或怪癖检测。例如，某些浏览器实现了为将来功能预留的存根(stub)函数。在这种情况下，仅测试相应的函数是否存在还得不到足够的信息。
+* 同一款浏览器在不同平台下具备不同的能力。这时候，可能就有必要确定浏览器位于哪个平台下。
+* 为了跟踪分析等目的需要知道确切的浏览器。
