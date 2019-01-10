@@ -1,4 +1,4 @@
-#前言
+# 前言
 定义函数的方式有两种：一种是函数声明，另一种就是函数表达式。<br>
 1.函数声明的语法：<br>
     `function functionName(agr0, arg1, arg2){ }`<br>
